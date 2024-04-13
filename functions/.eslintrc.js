@@ -9,8 +9,6 @@ module.exports = {
   extends: ['eslint:recommended', 'google'],
   rules: {
     'no-restricted-globals': ['error', 'name'],
-    "object-curly-spacing": ["error", "never", { "ignoreProperties": true }],
-    'operator-linebreak': ['error', 'after'],
     'max-len': ['error', {code: 500}],
     'prefer-arrow-callback': 'error',
     'new-cap': 'off',
@@ -25,4 +23,5 @@ module.exports = {
     },
   ],
   globals: {},
-}
+};
+
