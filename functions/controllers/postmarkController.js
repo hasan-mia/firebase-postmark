@@ -1,7 +1,6 @@
 /* eslint-disable require-jsdoc */
 const logger = require('firebase-functions/logger');
 const axios = require('axios');
-const ErrorHandler = require('../utils/errorhandler');
 const {POSTMARK_SERVER_TOKEN} = require('../constant');
 
 exports.postmarkWebhook = async (req, res, next) => {
@@ -18,7 +17,7 @@ exports.postmarkWebhook = async (req, res, next) => {
     res.status(200).send('Webhook received and processed successfully.');
   } catch (error) {
     logger.error(error.message, {structuredData: true});
-    next(new ErrorHandler(error.message, 500));
+    res.status(500).send('Internal server error');
   }
 };
 
@@ -47,6 +46,6 @@ async function sendBatchResponse(recipients, subject, message) {
     // logger.info(response.data, {structuredData: true});
   } catch (error) {
     logger.error(error.message, {structuredData: true});
-    throw new Error('Failed to send batch response');
+    res.status(500).send('Internal server error');
   }
 }
