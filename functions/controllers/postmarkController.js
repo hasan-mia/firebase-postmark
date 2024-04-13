@@ -28,7 +28,7 @@ async function sendBatchResponse(recipients, subject, message) {
         'https://api.postmarkapp.com/email/batch',
         {
           Messages: recipients.map((recipient) => ({
-            From: 'admin@ensellers.com',
+            From: 'jeff@servicerep.ai',
             To: recipient,
             Subject: subject,
             TextBody: message,
@@ -46,6 +46,5 @@ async function sendBatchResponse(recipients, subject, message) {
     // logger.info(response.data, {structuredData: true});
   } catch (error) {
     logger.error(error.message, {structuredData: true});
-    res.status(500).send('Internal server error');
   }
 }

@@ -1,4 +1,4 @@
-module.exports.API_PREFIX = process.env.API_PREFIX || '/express';
+module.exports.API_PREFIX = process.env.API_PREFIX || '/v1';
 module.exports.PORT = process.env.PORT || 5000;
 module.exports.MONGO_URI =
   process.env.NODE_ENV == 'production' ?
@@ -36,4 +36,4 @@ module.exports.APP_PASSWORD = process.env.APP_PASSWORD ?
 
 module.exports.POSTMARK_SERVER_TOKEN = process.env.POSTMARK_SERVER_TOKEN ?
   process.env.POSTMARK_SERVER_TOKEN :
-  'b1062c98-c8e0-492d-97e4-7e74dca6cc5a';
+  'a42f371e-666c-45a9-b7b1-0b40e4fc00b4';
