@@ -12,15 +12,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
 // all routes
-const hello = require('./routes/helloRoutes');
 const postmark = require('./routes/postmarkRoutes');
 
 // site status
-app.get(`${API_PREFIX}/health`, (_, res) => {
+app.get(`/`, (_, res) => {
   res.send('OK : Server is running');
 });
 
-app.use(`${API_PREFIX}`, hello);
 app.use(`${API_PREFIX}`, postmark);
 
 // Expose Express app as a Firebase Function

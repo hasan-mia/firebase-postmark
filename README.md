@@ -1,23 +1,61 @@
 # Firebase Function Postmark
 
-First, run the development server:
-
-```bash
-cd functions
-#then
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Setup Firebase:
+Install firebase tools:
 
 ```bash
 npm install -g firebase-tools
+```
+
+Install dependency:
+
+```bash
+cd functions
+```
+
+```bash
+npm install
+```
+
+Run:
+
+```bash
+firebase emulators:start
+```
+
+```bash
+#find base url like
+http://localhost:5001/project-id/us-central1/api/v1
+
+#webhook api endpoint url
+{base_url}/v1/postmarkhook;
+```
+
+Deploy:
+
+```bash
+firebase deploy
+```
+
+Project Structure:
+
+```bash
+__functions
+_____index.js ('Project root')
+_____controllers ('Controller folder')
+_______postmarkController.js ('Here define all postmark related functionality')
+_____routes ('All indivisual route in this folder')
+________postmarkRoute.js ('Postmark related api endpoint')
+_____middleware ('Middleware folder')
+_____utils ('All helper functions folder')
+
+```
+
+Create New Firebase Function Project:[Dont Need]
+
+```bash
+npm install -g firebase-tools
+#then
+firebase init functions
 #then
 firebase init emulators
 #then select
@@ -31,19 +69,4 @@ firebase init emulators
  ◯ Storage Emulator
 #then
 firebase emulators:start
-#then visit
-http://localhost:5001/project-id/us-central1/api/v1/health
-
-```
-
-Deploy New Prject
-
-```bash
-firebase deploy
-```
-
-Create New Prject
-
-```bash
-firebase init functions
 ```
