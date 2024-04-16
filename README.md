@@ -47,6 +47,7 @@ _____routes ('All indivisual route in this folder')
 ________postmarkRoute.js ('Postmark related api endpoint')
 _____middleware ('Middleware folder')
 _____utils ('All helper functions folder')
+_____constant.js ('All constant valuec')
 
 ```
 

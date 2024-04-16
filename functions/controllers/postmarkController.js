@@ -1,6 +1,6 @@
 const postmark = require('postmark');
 const logger = require('firebase-functions/logger');
-const {POSTMARK_SERVER_TOKEN} = require('../constant');
+const {POSTMARK_SERVER_TOKEN, SMPT_MAIL} = require('../constant');
 
 const client = new postmark.ServerClient(POSTMARK_SERVER_TOKEN);
 
@@ -10,9 +10,9 @@ exports.postmarkWebhook = async (req, res)=>{
   console.log('Data:', req.body);
   const email = req.body['Message'];
 
-  if (email['TextBody'].includes('order')) {
+  if (email['TextBody'].includes('auto')) {
     client.sendEmail({
-      From: 'jeff@servicerep.ai',
+      From: SMPT_MAIL,
       To: email['From'],
       Subject: 'Automated Response',
       TextBody: 'This is an automated response to your email.',
@@ -34,7 +34,7 @@ exports.sendMessage = async (req, res, next) => {
   const {recipient, subject, message} = req.body;
   try {
     const response = await client.sendEmail({
-      'From': 'jeff@servicerep.ai',
+      'From': SMPT_MAIL,
       'To': recipient,
       'Subject': subject,
       'HtmlBody': '<strong>Hello</strong> dear user.',
