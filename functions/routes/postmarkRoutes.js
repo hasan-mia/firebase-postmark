@@ -1,8 +1,10 @@
 const express = require('express');
-const {postmarkWebhook} = require('../controllers/postmarkController');
+const {sendMessage, postmarkWebhook} = require('../controllers/postmarkController');
 
 const router = express.Router();
 
-router.post('/postmark', postmarkWebhook);
+router.post('/postmark/message', sendMessage);
+
+router.post('/postmarkhook', postmarkWebhook);
 
 module.exports = router;

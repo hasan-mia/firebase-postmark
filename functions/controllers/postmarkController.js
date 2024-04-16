@@ -1,50 +1,48 @@
-/* eslint-disable require-jsdoc */
+const postmark = require('postmark');
 const logger = require('firebase-functions/logger');
-const axios = require('axios');
 const {POSTMARK_SERVER_TOKEN} = require('../constant');
 
-exports.postmarkWebhook = async (req, res, next) => {
-  const {textBody, threadID, recipients, subject, message} = req.body;
+const client = new postmark.ServerClient(POSTMARK_SERVER_TOKEN);
+
+
+exports.sendMessage = async (req, res, next) => {
+  const {recipient, subject, message} = req.body;
   try {
-    const isFirstEmail = threadID === null;
-    const containsString = textBody.includes('specified_string');
+    const response = await client.sendEmail({
+      'From': 'jeff@servicerep.ai',
+      'To': recipient,
+      'Subject': subject,
+      'HtmlBody': '<strong>Hello</strong> dear user.',
+      'TextBody': message,
+      'MessageStream': 'replies',
+    });
 
-    if (isFirstEmail && containsString) {
-      const recipientList = recipients || [];
-      await sendBatchResponse(recipientList, subject, message);
-    }
+    console.log(response);
 
-    res.status(200).send('Webhook received and processed successfully.');
+    res.send('Email sent successfully:', response);
   } catch (error) {
-    logger.error(error.message, {structuredData: true});
-    res.status(500).send('Internal server error');
+    res.send('Error sending email:', error);
   }
 };
 
-// Function to send batch response using Postmark API
-async function sendBatchResponse(recipients, subject, message) {
-  try {
-    const response = await axios.post(
-        'https://api.postmarkapp.com/email/batch',
-        {
-          Messages: recipients.map((recipient) => ({
-            From: 'jeff@servicerep.ai',
-            To: recipient,
-            Subject: subject,
-            TextBody: message,
-          })),
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Postmark-Server-Token': POSTMARK_SERVER_TOKEN,
-          },
-        },
-    );
+exports.postmarkWebhook = async (req, res)=>{
+  const email = req.body['Message'];
 
-    console.log('Batch response sent successfully:', response.data);
-    // logger.info(response.data, {structuredData: true});
-  } catch (error) {
-    logger.error(error.message, {structuredData: true});
+  if (email['TextBody'].includes('order')) {
+    client.sendEmail({
+      From: 'jeff@servicerep.ai',
+      To: email['From'],
+      Subject: 'Automated Response',
+      TextBody: 'This is an automated response to your email.',
+    }).then((response) => {
+      console.log('Automated response sent successfully', response.data);
+      logger.success(response.data, {structuredData: true});
+    }).catch((error) => {
+      logger.error(error.message, {structuredData: true});
+      console.error('Error sending automated response:', error.message);
+    });
   }
-}
+
+  res.status(200).send('Webhook received successfully');
+};
+
